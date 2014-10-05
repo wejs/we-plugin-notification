@@ -1,0 +1,17 @@
+<h1 class="email-title">Oi <%= user.displayName %></h1>
+
+<h2 class="notification-title">Email de notificação</h2>
+<table class="notitication-table">
+<% notifications.forEach(function(notification, index) { %>
+  <tr>
+    <td><a class="notification-link" href="<%= notification.emailLink %>">
+      <%- notification.emailText %>...
+    </a></td>
+  </tr>
+<% }); %>
+</table>
+
+<div class="footer">
+  Cheers,
+  <%= site.name %> team
+</div>

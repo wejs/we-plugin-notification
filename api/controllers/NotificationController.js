@@ -23,11 +23,12 @@ module.exports = {
       read = true;
     }
 
+    // TODO check created time
     Notification.count()
     .where({
       user: userId,
       read: Boolean(read)
-    }).exec(function(err, count) {
+    }).exec(function (err, count) {
       if (err) {
         sails.log.error('getUnreadNotificationCount:Notification:', err);
         return res.serverError();
@@ -44,12 +45,10 @@ module.exports = {
     // Look up the model
     var Model = Notification;
 
-
     var locale = req.user.locale;
     if (!locale) {
       locale = sails.config.i18n.defaultLocale;
     }
-
 
     // Lookup for records that match the specified criteria
     var query = Model.find()

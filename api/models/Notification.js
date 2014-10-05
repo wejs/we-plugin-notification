@@ -7,6 +7,7 @@
  */
 var weHelpers = require('we-helpers');
 var S = require('string');
+var WN = require(process.cwd() + '/node_modules/we-plugin-notification');
 
 module.exports = {
   schema: true,
@@ -126,12 +127,7 @@ module.exports = {
       }) + ' ' + obj.groupName;
     }
 
-    obj.text = sails.__({
-        phrase: 'notification.text.' + obj.model + '.' + obj.action,
-        locale: obj.locale
-      },
-      obj
-    );
+    obj.text = WN.format.simple(obj, sails);
 
     obj.textClean = S(obj.text).stripTags().s;
 
