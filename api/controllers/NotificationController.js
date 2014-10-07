@@ -239,5 +239,34 @@ module.exports = {
       res.send(200,{});
     });// </updated>
 
+  },
+
+  linkPermanent: function(req, res) {
+
+    var id = req.param('id');
+
+    if( !id ) {
+      return res.notFound();
+    }
+
+    Notification.findOne({id: id})
+    .exec(function(err, notification){
+      if( err ) {
+        sails.log.error('Error on find notification', err);
+        return res.serverError();
+      }
+
+      if ( !notification ) {
+        return res.notFound();
+      }
+
+      if ( notification.targetModelType == 'post' ) {
+        notification.targetModelType = 'posts';
+      }
+
+      var url = '/' + notification.targetModelType + '/' + notification.targetModelId;
+
+      return res.redirect(url);
+    })
   }
 };

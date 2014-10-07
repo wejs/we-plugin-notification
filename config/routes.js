@@ -25,6 +25,11 @@ module.exports.routes = {
     action        : 'update'
   },
 
+  // link permanent
+  'get /link-permanent/notification/:id': {
+    controller    : 'notification',
+    action        : 'linkPermanent'
+  },
 
   // get current user notification count
   'get /api/v1/current-user/notification-count': {
