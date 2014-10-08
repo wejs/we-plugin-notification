@@ -170,24 +170,24 @@ module.exports = {
       );
     });
 
-    // load the related model
-    if ( record.model && record.modelId) {
-      if (sails.models[record.model]) {
-        // get related model in async paralel array
-        queryGetters.push(function (cb) {
-          weHelpers.db.loadRecordIfNotLoaded(
-            recordsRelated,
-            record.model,
-            record.modelId,
-            function(err, recordRelated){
-              if ( err ) return cb(err);
-              relatedModel = recordRelated;
-              return cb();
-            }
-          );
-        });
-      }
-    }
+    // // load the related model
+    // if ( record.model && record.modelId) {
+    //   if (sails.models[record.model]) {
+    //     // get related model in async paralel array
+    //     queryGetters.push(function (cb) {
+    //       weHelpers.db.loadRecordIfNotLoaded(
+    //         recordsRelated,
+    //         record.model,
+    //         record.modelId,
+    //         function(err, recordRelated){
+    //           if ( err ) return cb(err);
+    //           relatedModel = recordRelated;
+    //           return cb();
+    //         }
+    //       );
+    //     });
+    //   }
+    // }
     // run query with assync
     async.parallel(queryGetters,
     // optional callback
