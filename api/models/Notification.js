@@ -114,10 +114,7 @@ module.exports = {
    */
   customToJSON: function (obj){
     // -- Create a translated text for every locale
-    obj.contentTypeText = sails.__({
-      phrase: 'post.contentType.' + obj.contentType,
-      locale: obj.locale
-    });
+    obj.contentTypeText = WN.format.contentTypeText(obj, sails);
 
     // if inside group
     if ( obj.groupName ) {
