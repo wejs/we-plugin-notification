@@ -125,8 +125,11 @@ module.exports = {
     }
 
     obj.text = WN.format.simple(obj, sails);
-
-    obj.textClean = S(obj.text).stripTags().s;
+    if (obj.text) {
+      obj.textClean = S(obj.text).stripTags().s;
+    } else {
+      obj.textClean = null;
+    }
 
     return obj;
   },
