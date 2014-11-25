@@ -1,11 +1,11 @@
 {
   "name": "we-plugin-notification",
   "description": "We.js notification plugin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "dependencies": {
     "lodash": "^2.4.1",
     "string": "^2.1.0",
-    "we-helpers": "0.0.5"
+    "we-helpers": "^0.0.6"
   },
   "main": "lib/index.js",
   "scripts": {
