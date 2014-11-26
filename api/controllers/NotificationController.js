@@ -78,7 +78,6 @@ module.exports = {
     sql += ' ORDER BY createdAt DESC ';
     sql += ' LIMIT ' + actionUtil.parseSkip(req) + ',' + actionUtil.parseLimit(req);
 
-    sails.log.warn(sql);
     // Lookup for records that match the specified criteria
     Notification.query(sql, function found(err, result) {
       if (err) return res.serverError(err);
