@@ -8,8 +8,15 @@
 var util = require('util');
 var actionUtil = require('we-helpers').actionUtil;
 var _ = require('lodash');
+var async = require('async');
 
 module.exports = {
+  destroy: function(req, res) {
+    return res.notFound();
+  },
+  populate: function(req, res) {
+    return res.notFound();
+  },
 
   getUnreadNotificationCount: function( req, res ) {
     if(!req.isAuthenticated()) return req.forbidden();
@@ -41,29 +48,49 @@ module.exports = {
   },
 
   find: function findRecords (req, res) {
+    if (!req.isAuthenticated()) return res.forbidden();
 
-    // Look up the model
-    var Model = Notification;
+    var sails = req._sails;
 
     var locale = req.user.locale;
     if (!locale) {
       locale = sails.config.i18n.defaultLocale;
     }
 
+    var read = req.param('read');
+    if (read === 'all') {
+      read = null;
+    } else {
+      read = Boolean(read);
+    }
+
+    var sql = 'SELECT n.* FROM notification n ' ;
+    sql += ' WHERE n.user=' + req.user.id ;
+
+    if (read === 'all') {
+      // skip ...
+    } else if(read) {
+      sql += ' AND n.user IS true ';
+    } else {
+      sql += ' AND n.user IS false ';
+    }
+
+    sql += ' ORDER BY createdAt DESC ';
+    sql += ' LIMIT ' + actionUtil.parseSkip(req) + ',' + actionUtil.parseLimit(req);
+
+    sails.log.warn(sql);
     // Lookup for records that match the specified criteria
-    var query = Model.find()
-    .where( actionUtil.parseCriteria(req) )
-    .limit( actionUtil.parseLimit(req) )
-    .skip( actionUtil.parseSkip(req) )
-    .sort( actionUtil.parseSort(req) );
-    // TODO: .populateEach(req.options);
-    //query = actionUtil.populateEach(query, req.options);
-    query.exec(function found(err, matchingRecords) {
+    Notification.query(sql, function found(err, result) {
       if (err) return res.serverError(err);
 
-      if(! matchingRecords ) {
+      if(! result ) {
         return res.send({ notifications: {}});
       }
+
+
+      var matchingRecords = result.map(function(n){
+        return new Notification._model(n);
+      });
 
       var recordsRelated = {};
 
@@ -110,7 +137,7 @@ module.exports = {
     // (Note: this could be achieved in a single query, but a separate `findOne`
     //  is used first to provide a better experience for front-end developers
     //  integrating with the blueprint API.)
-    Model.findOne(pk).populateAll().exec(function found(err, matchingRecord) {
+    Model.findOne(pk).exec(function found(err, matchingRecord) {
 
       if (err) return res.serverError(err);
       if (!matchingRecord) return res.notFound();
