@@ -4,26 +4,6 @@
  * @type {Object}
  */
 module.exports.routes = {
-  // crud
-  'get /api/v1/notification': {
-    controller    : 'notification',
-    action        : 'find'
-  },
-
-  'get /api/v1/notification/:id': {
-      controller    : 'notification',
-      action        : 'findOne'
-  },
-
-  'post /api/v1/notification': {
-    controller    : 'notification',
-    action        : 'create'
-  },
-
-  'put /api/v1/notification/:id': {
-    controller    : 'notification',
-    action        : 'update'
-  },
 
   // link permanent
   'get /link-permanent/notification/:id': {
