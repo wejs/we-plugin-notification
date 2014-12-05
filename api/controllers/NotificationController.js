@@ -286,10 +286,6 @@ module.exports = {
         return res.notFound();
       }
 
-      if ( notification.targetModelType == 'post' ) {
-        notification.targetModelType = 'posts';
-      }
-
       var url = '/' + notification.targetModelType + '/' + notification.targetModelId;
 
       return res.redirect(url);
