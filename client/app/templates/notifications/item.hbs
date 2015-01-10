@@ -1,0 +1,11 @@
+<tr {{bind-attr class='itemClass'}}>
+  <td {{bind-attr class=notificationType}}>
+    {{id}}
+  </td>
+  <td>
+  {{view App.NotificationTextView}}
+  </td>
+  <td>
+    <a href="#changeRead" {{action 'changeNotificedStatus'}} {{bind-attr class=itemClass}} >{{linkStatusText}}</a>
+  </td>
+</tr>
