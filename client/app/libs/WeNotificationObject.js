@@ -129,7 +129,7 @@ window.WeNotification = Ember.Object.extend({
     if( !App.get('currentUser.id') ) {
       return;
     }
-console.log('rodo')
+
     return $.ajax({
       url: '/api/v1/current-user/notification-count',
       data: {
