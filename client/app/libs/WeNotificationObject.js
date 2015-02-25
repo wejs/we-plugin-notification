@@ -99,8 +99,10 @@ window.WeNotification = Ember.Object.extend({
     if( permission ) {
       if( permission === 'granted') {
         // can notify
-      } else if( we.configs.client.publicVars.allowNotifications ) {
-        this.requestPermission();
+      } else {
+        var allow = we.configs.client.publicVars.allowNotifications;
+        if ( typeof allow === 'undefined' ) allow = true;
+        if ( allow ) this.requestPermission();        
       }
     }
 
