@@ -5,10 +5,6 @@
 module.exports = function loadPlugin(projectPath, Plugin) {
   var plugin = new Plugin(__dirname);
 
-  // set plugin configs
-  // plugin.setConfigs({
-  // });
-
   // set plugin routes
   plugin.setRoutes({
     'get /link-permanent/notification/:id': {
@@ -51,5 +47,8 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     }
   });
 
+  plugin.events.on('we:after:load:plugins', function (we) {
+    we.notification = true;
+  });
   return plugin;
 }
