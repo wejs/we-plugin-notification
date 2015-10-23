@@ -2,13 +2,11 @@
 
 [![Dependency Status](https://david-dm.org/wejs/we-plugin-notification.png)](https://david-dm.org/wejs/we-plugin-notification)
 
-> Flag everything!
+> User notification feature 
 
-## API:
-TODO
+## URLs
 
-## Avaible URLS:
-TODO
+See **plugin.js** file
 
 #### NPM Info:
 [![NPM](https://nodei.co/npm/we-plugin-notification.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/we-plugin-notification/)
