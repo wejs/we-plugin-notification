@@ -1,0 +1,17 @@
+<p>Hi {{user.displayName}},</p>
+
+<h3 class="notification-title">Notifications email</h3>
+<table class="notitication-table">
+{{#each notifications as notification}}
+  <tr>
+    <td><a class="notification-link" href="{{notification.emailLink}}">
+      {{notification.emailText}}...
+    </a></td>
+  </tr>
+{{/each}}
+</table>
+
+<div class="footer">
+  Cheers,
+  {{site.name}} team
+</div>
