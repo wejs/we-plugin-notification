@@ -27,19 +27,31 @@ module.exports = {
   findCurrentUserNotifications: function findRecords (req, res) {
     if (!req.isAuthenticated()) return res.forbidden();
 
-    if (req.params.read === 'all') {
-      res.locals.query.read = null;
+    if (req.query.read === 'all') {
+      res.locals.query.where.read = null;
+    } else if (req.query.read === 'true'){
+      res.locals.query.where.read = true;
     } else {
-      res.locals.query = Boolean(req.params.read);
+      res.locals.query.where.read = false;
     }
 
-    res.locals.query.user = req.params.user;
+    res.locals.query.where.userId = req.user.id;
 
     req.we.db.models.notification.findAll(res.locals.query)
     .then(function (r){
+
       res.locals.data = r;
-      res.ok();
-    }).catch(req.queryError);
+
+      req.we.db.models.notification.count({
+        where: {
+          userId: req.user.id,
+          read: res.locals.query.where.read
+        }
+      }).then(function (count){
+        res.locals.metadata.count = count;
+        res.ok();
+      }).catch(req.queryError); // count
+    }).catch(req.queryError); // findAll
   },
 
   /**

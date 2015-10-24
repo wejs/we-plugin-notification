@@ -32,11 +32,22 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       permission    : true
     },
 
+    // get notifications
     'get /api/v1/notify/notification': {
       controller    : 'notification',
       model         : 'notification',
       action        : 'findCurrentUserNotifications',
-      permission    : true
+      permission    : true,
+      search: {
+        // since search is avaible in findAll by default
+        since: {
+          parser: 'since',
+          target: {
+            type: 'field',
+            field: 'createdAt'
+          }
+        }
+      }
     },
 
     'post /api/v1/notify/:notificationId/:isRead': {

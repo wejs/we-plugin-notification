@@ -45,6 +45,8 @@ module.exports = function (we) {
         type: we.db.Sequelize.INTEGER
       },
 
+      link: { type: we.db.Sequelize.TEXT },
+
       actions: {
         type: we.db.Sequelize.BLOB,
         skipSanitizer: true,
@@ -57,7 +59,7 @@ module.exports = function (we) {
           if (typeof object == 'object') {
             this.setDataValue('actions', JSON.stringify(object));
           } else {
-            throw new Error('invalid error in notification configuration value: ', object);
+            throw new Error('invalid error in notification action value: ', object);
           }
         }
       }
