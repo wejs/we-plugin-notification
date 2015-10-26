@@ -64,13 +64,28 @@ module.exports = {
     .then(function(r){
       if (!r) return res.notFound();
 
+      var read;
       if (req.params.isRead == 'true') {
-        r.read = true;
+        read = true;
       } else {
-        r.read = false;
+        read = false;
       }
 
-      r.save().then(function(){
+      if (r.read == read) {
+        return res.send({ notification: r });
+      }
+
+      r.read = read;
+
+      r.save().then(function() {
+        if (req.we.io) {
+          // emit to other users devices
+          req.we.io.sockets.in('user_' + req.user.id)
+          .emit('notification:update:read', {
+            id: r.id, read: r.read
+          });
+        }
+
         res.send({ notification: r });
       }).catch(req.queryError);
     }).catch(req.queryError);

@@ -76,7 +76,7 @@ module.exports = function (we) {
     },
     options: {
       // title field, for default title record pages
-      // titleField: 'title',
+      titleField: 'title',
 
       // Class methods for use with: we.db.models.[yourmodel].[method]
       classMethods: {},
