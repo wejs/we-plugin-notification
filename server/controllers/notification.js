@@ -24,15 +24,21 @@ module.exports = {
    * Find current user notifications
    *
    */
-  findCurrentUserNotifications: function findRecords (req, res) {
+  find: function findRecords (req, res) {
     if (!req.isAuthenticated()) return res.forbidden();
 
     if (req.query.read === 'all') {
+      res.locals.isNAll = true;
+      res.locals.title = res.locals.__('notification.find.all');
       res.locals.query.where.read = null;
     } else if (req.query.read === 'true'){
+      res.locals.isReads = true;
+      res.locals.title = res.locals.__('notification.find.read');
       res.locals.query.where.read = true;
     } else {
       res.locals.query.where.read = false;
+      res.locals.isUnreads = true;
+      res.locals.title = res.locals.__('notification.find.unread');
     }
 
     res.locals.query.where.userId = req.user.id;
@@ -54,25 +60,37 @@ module.exports = {
     }).catch(req.queryError); // findAll
   },
 
+  create: function create(req, res) {
+    return res.notFound();
+  },
+
   /**
    * Update notification read status attr
    */
   setNotificationRead: function setNotificationRead (req, res) {
     if(!req.isAuthenticated()) return req.forbidden();
 
+    var redirectTo = req.we.utils.getRedirectUrl(req, res);
+
     req.we.db.models.notification.findById(req.params.notificationId)
-    .then(function(r){
+    .then(function (r) {
       if (!r) return res.notFound();
+      // not is owner
+      if (r.userId != req.user.id) return res.forbidden();
 
       var read;
-      if (req.params.isRead == 'true') {
+      if (req.body.isRead == 'true') {
         read = true;
       } else {
         read = false;
       }
 
       if (r.read == read) {
-        return res.send({ notification: r });
+        if (redirectTo) {
+          return res.goTo(redirectTo);
+        } else {
+          return res.send({ notification: r });
+        }
       }
 
       r.read = read;
@@ -86,7 +104,11 @@ module.exports = {
           });
         }
 
-        res.send({ notification: r });
+        if (redirectTo) {
+          res.goTo(redirectTo);
+        } else {
+          res.send({ notification: r });
+        }
       }).catch(req.queryError);
     }).catch(req.queryError);
   },

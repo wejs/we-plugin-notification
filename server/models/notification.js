@@ -13,30 +13,29 @@ module.exports = function (we) {
         type: we.db.Sequelize.STRING,
         defaultValue: 'en-us'
       },
-
+      /**
+       * The notification title / text
+       * @type {Object}
+       */
       title: {
-        type: we.db.Sequelize.STRING,
+        type: we.db.Sequelize.TEXT,
         allowNull: false
       },
+      /**
+       * Teaser or small text with something related notified content
+       * @type {Object}
+       */
       text: {
         type: we.db.Sequelize.TEXT,
         allowNull: false
       },
-      // Status: salved | unpublished | deleted ...
-      status: {
+      // url to redirect
+      redirectUrl: {
         type: we.db.Sequelize.STRING,
-        defaultValue: 'salved'
+        allowNull: false
       },
-      // if send the email notification
-      emailSend: {
-        type: we.db.Sequelize.BOOLEAN,
-        defaultValue: false
-      },
-      // if is read
-      read: {
-        type: we.db.Sequelize.BOOLEAN,
-        defaultValue: false
-      },
+
+      // optional modelName and modelId
 
       modelName: {
         type: we.db.Sequelize.STRING
@@ -45,8 +44,15 @@ module.exports = function (we) {
         type: we.db.Sequelize.INTEGER
       },
 
-      link: { type: we.db.Sequelize.TEXT },
-
+      /**
+       * A small text to identify your notification type
+       * @type {Object}
+       */
+      type: {
+        type: we.db.Sequelize.STRING,
+        allowNull: false
+      },
+      // extra actions to do, like accept or declive something
       actions: {
         type: we.db.Sequelize.BLOB,
         skipSanitizer: true,
@@ -62,6 +68,17 @@ module.exports = function (we) {
             throw new Error('invalid error in notification action value: ', object);
           }
         }
+      },
+
+      // if send the email notification
+      emailSend: {
+        type: we.db.Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      // if is read
+      read: {
+        type: we.db.Sequelize.BOOLEAN,
+        defaultValue: false
       }
     },
     // Associations
@@ -72,12 +89,17 @@ module.exports = function (we) {
         type: 'belongsTo',
         model: 'user',
         allowNull: false
+      },
+      // user how did the action, leave null for system notifications
+      actor: {
+        type: 'belongsTo',
+        model: 'user',
+        allowNull: false
       }
     },
     options: {
       // title field, for default title record pages
       titleField: 'title',
-
       // Class methods for use with: we.db.models.[yourmodel].[method]
       classMethods: {},
       // record method for use with record.[method]

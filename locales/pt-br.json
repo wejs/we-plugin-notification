@@ -1,0 +1,16 @@
+{
+  "notification.find.unread": "Notificações novas",
+  "notification.find.read":  "Notificações lidas",
+  "notification.find.all":  "Todas as notificações",
+
+  "notification.unread": "Novas",
+  "notification.read":  "Lidas",
+  "notification.all":  "Todas",
+
+  "notification.mark.as.unread": "Desmarcar",
+  "notification.mark.as.read": "Marcar",
+  "notification.find.empty": "Sem notificações aqui",
+
+  "notification.find": "Notificações",
+  "notification.follow": "Seguindo"
+}

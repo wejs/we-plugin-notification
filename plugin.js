@@ -33,11 +33,13 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     },
 
     // get notifications
-    'get /api/v1/notify/notification': {
+    'get /notification': {
       controller    : 'notification',
       model         : 'notification',
-      action        : 'findCurrentUserNotifications',
+      action        : 'find',
+      layoutName    : 'fullwidth',
       permission    : true,
+
       search: {
         // since search is avaible in findAll by default
         since: {
@@ -50,7 +52,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       }
     },
 
-    'post /api/v1/notify/:notificationId/:isRead': {
+    'post /api/v1/notify/:notificationId': {
       controller    : 'notification',
       model         : 'notification',
       action        : 'setNotificationRead',
