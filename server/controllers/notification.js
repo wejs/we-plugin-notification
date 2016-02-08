@@ -12,7 +12,7 @@ module.exports = {
 
     req.we.db.models.notification.count({
       where: {
-        user: req.user.id,
+        userId: req.user.id,
         read: Boolean (read)
       }
     }).then(function (count) {

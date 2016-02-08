@@ -1,0 +1,12 @@
+.main-menu-notification-link .main-menu-notification-text {
+  display: none;
+}
+
+.main-menu-notification-link.have-notifications .glyphicon{
+  color: red;
+}
+
+.main-menu-link-notification-count {
+  background-color: red;
+  color: #fff;
+}

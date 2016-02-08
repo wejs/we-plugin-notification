@@ -95,6 +95,29 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     we.notification = true;
   });
 
+
+  plugin.hooks.on('we-plugin-menu:after:set:core:menus', function(data, done){
+    var req = data.req;
+    var res = data.res;
+
+    // set user menu
+    if (req.isAuthenticated()) {
+      res.locals.userMenu.addLink({
+        id: 'notifications',
+        href: '/notification',
+        text: '<span class="glyphicon glyphicon-bell"></span>'+
+              '<span class="main-menu-link-notification-count badge"></span> '+
+              '<span class="main-menu-notification-text">'+
+                res.locals.__('notification.find') +
+              '</span>',
+        class: 'main-menu-notification-link',
+        weight: 0
+      });
+    }
+
+    done();
+  });
+
   /**
    * Send email notifications to all users
    */
@@ -195,6 +218,15 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       }, done);
     }).catch(done);
   }
+
+  plugin.addJs('we.notification', {
+    type: 'plugin', weight: 15, pluginName: 'we-plugin-notification',
+    path: 'files/public/we.notification.js'
+  });
+  plugin.addCss('we.notification', {
+    type: 'plugin', weight: 15, pluginName: 'we-plugin-notification',
+    path: 'files/public/we.notification.css'
+  });
 
   return plugin;
 }
