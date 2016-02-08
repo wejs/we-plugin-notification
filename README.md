@@ -4,6 +4,14 @@
 
 > Send notifications to your users, this plugin is inspered in github notifications
 
+## Installation:
+
+Inside your we.js project folder:
+
+```sh
+npm install we-plugin-notification --save
+```
+
 ## API:
 
 > Authenticated user notifications is avaible at */notification* page or API endpoint
