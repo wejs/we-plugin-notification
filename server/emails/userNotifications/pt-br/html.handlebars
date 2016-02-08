@@ -1,0 +1,19 @@
+<p>Oi {{user.displayName}},</p>
+
+<h3 class="notification-title">Você tem novas notificações:</h3>
+<table class="notitication-table">
+{{#each notifications}}
+  <tr>
+    <td>{{{this.title}}}</td>
+    <td>
+      <a class="notification-link" href="{{../we.config.hostname}}{{this.redirectUrl}}">Ver</a>
+    </td>
+  </tr>
+{{/each}}
+</table>
+
+<br />
+
+<p>
+Equipe {{ we.config.appName}}
+</p>

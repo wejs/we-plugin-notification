@@ -95,6 +95,13 @@ module.exports = function (we) {
         type: 'belongsTo',
         model: 'user',
         allowNull: false
+      },
+      settings: {
+        type: 'hasOne',
+        model: 'notificationSettings',
+        otherKey: 'userId',
+        foreignKey: 'userId',
+        constraints: false
       }
     },
     options: {

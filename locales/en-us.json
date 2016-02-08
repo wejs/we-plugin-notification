@@ -18,9 +18,9 @@
 
   "notification.user.settings": "Notification settings",
 
-  "form-notificationSettings-followingEmailNotificatins": "Receive e-mail notifications?",
-  "form-placeholder-notificationSettings-followingEmailNotificatins": " ",
-  "form-helper-notificationSettings-followingEmailNotificatins": " ",
+  "form-notificationSettings-followingEmailNotifications": "Receive e-mail notifications?",
+  "form-placeholder-notificationSettings-followingEmailNotifications": " ",
+  "form-helper-notificationSettings-followingEmailNotifications": " ",
 
   "form-notificationSettings-email": "Notification email",
   "form-helper-notificationSettings-email": "Keep this field empty to receive emails in your account email",
@@ -31,5 +31,7 @@
   "form-placeholder-notificationSettings-updatedAt": " ",
   "form-notificationSettings-createdAt": "Created at",
   "form-helper-notificationSettings-createdAt": " ",
-  "form-placeholder-notificationSettings-createdAt": " "
+  "form-placeholder-notificationSettings-createdAt": " ",
+
+  "notification.user.email.subject": "You have new notifications in {{siteName}}"
 }

@@ -1,17 +1,20 @@
 <p>Hi {{user.displayName}},</p>
 
-<h3 class="notification-title">Notifications email</h3>
+<h3 class="notification-title">You have new notifications:</h3>
 <table class="notitication-table">
-{{#each notifications as notification}}
+{{#each notifications}}
   <tr>
-    <td><a class="notification-link" href="{{notification.emailLink}}">
-      {{notification.emailText}}...
-    </a></td>
+    <td>{{{this.title}}}</td>
+    <td>
+      <a class="notification-link" href="{{../we.config.hostname}}{{this.redirectUrl}}">View</a>
+    </td>
   </tr>
 {{/each}}
 </table>
 
-<div class="footer">
+<br />
+
+<p>
   Cheers,
-  {{site.name}} team
-</div>
+  {{we.config.appName}} team
+</p>

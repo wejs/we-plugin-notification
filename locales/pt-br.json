@@ -18,6 +18,10 @@
 
   "notification.user.settings": "Configurações de notificação",
 
+  "form-notificationSettings-followingEmailNotifications": "Receber email de notificações?",
+  "form-placeholder-notificationSettings-followingEmailNotifications": " ",
+  "form-helper-notificationSettings-followingEmailNotifications": " ",
+
   "form-notificationSettings-email": "Email de notificação",
   "form-helper-notificationSettings-email": "Deixe esse campo vazio para receber as notificações no email da sua conta de usuário",
   "form-placeholder-notificationSettings-email": "Ex: example@example.com",
@@ -27,5 +31,7 @@
   "form-placeholder-notificationSettings-updatedAt": " ",
   "form-notificationSettings-createdAt": "Criado em",
   "form-helper-notificationSettings-createdAt": " ",
-  "form-placeholder-notificationSettings-createdAt": " "
+  "form-placeholder-notificationSettings-createdAt": " ",
+
+  "notification.user.email.subject": "Você tem novas notificações no site {{siteName}}"
 }

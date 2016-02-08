@@ -11,8 +11,8 @@ module.exports = function (we) {
     // define you model here
     // see http://docs.sequelizejs.com/en/latest/docs/models-definition
     definition: {
-      followingEmailNotificatins: {
-        type: we.db.Sequelize.STRING,
+      followingEmailNotifications: {
+        type: we.db.Sequelize.BOOLEAN,
         defaultValue: true,
         formFieldType: 'boolean'
       },
@@ -44,7 +44,9 @@ module.exports = function (we) {
       // Class methods for use with: we.db.models.[yourmodel].[method]
       classMethods: {},
       // record method for use with record.[method]
-      instanceMethods: {},
+      instanceMethods: {
+        getUrlPath: null
+      },
       // Sequelize hooks
       // See http://docs.sequelizejs.com/en/latest/api/hooks
       hooks: {}

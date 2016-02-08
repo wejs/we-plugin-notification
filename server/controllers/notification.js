@@ -185,10 +185,34 @@ module.exports = {
   userNotificationSettings: function userNotificationSettings(req, res) {
     if (!req.isAuthenticated()) return res.forbidden();
 
-    if (req.method == 'POST') {
+    if (!res.locals.data) res.locals.data = {};
 
-    } else {
-      res.ok();
-    }
+    res.locals.Model.findOne({
+      userId: req.user.id
+    }).then(function (record) {
+
+      if (req.method == 'POST') {
+        if (!record) {
+          //create
+          res.locals.Model.create(req.body)
+          .then(function (record) {
+            res.locals.data = record;
+            res.ok();
+          }).catch(res.queryError);
+        } else {
+
+          // update
+          record.updateAttributes(req.body)
+          .then(function() {
+            res.locals.data = record;
+            res.ok();
+          }).catch(res.queryError);
+        }
+      } else {
+
+        res.locals.data = record;
+        res.ok();
+      }
+    }).catch(res.queryError);
   }
 };
