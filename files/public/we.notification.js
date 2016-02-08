@@ -16,7 +16,7 @@ we.notification = {
     if (this.countDisplay && this.link) this.registerNewCheck();
   },
 
-  notificationsCountCheckDelay: 3000,
+  notificationsCountCheckDelay: 60000,// check every 1 min
   lastCheckData: null,
   registerNewCheck: function registerNewCheck() {
     setTimeout(
