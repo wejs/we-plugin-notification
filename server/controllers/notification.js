@@ -143,23 +143,24 @@ module.exports = {
     }).catch(res.queryError);
   },
 
-  markAllNotificationAsRead: function (req, res) {
+  markAllNotificationAsRead: function markAllNotificationAsRead(req, res) {
     if(!req.isAuthenticated()) return req.forbidden();
+
+    var redirectTo = req.we.utils.getRedirectUrl(req, res);
 
     req.we.db.models.notification.update({
       read: true
     },{
       where: {
-        user: req.user.id,
+        userId: req.user.id,
         read: false
       }
-    }).then(function updated(records) {
-      if (!records || !records.length) {
-        // no unread notifications
-        return res.send({});
+    }).then(function updated() {
+      if (redirectTo) {
+        res.goTo(redirectTo);
+      } else {
+        res.send({});
       }
-      // if success respond with 200
-      res.send({});
     }).catch(req.queryError);
   },
 
@@ -178,5 +179,16 @@ module.exports = {
 
       return res.goTo(url);
     }).catch(res.queryError);
+  },
+
+
+  userNotificationSettings: function userNotificationSettings(req, res) {
+    if (!req.isAuthenticated()) return res.forbidden();
+
+    if (req.method == 'POST') {
+
+    } else {
+      res.ok();
+    }
   }
 };

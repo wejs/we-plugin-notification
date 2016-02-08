@@ -1,0 +1,29 @@
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-12">
+  <ul class="nav nav-tabs">
+    <li role="presentation"><a href="/notification">
+      <span class="glyphicon glyphicon-bell"></span> {{t 'notification.find'}}
+    </a></li>
+    {{#if req.we.plugins.we-plugin-flag}}
+    <li role="presentation"><a href="/follow">
+      <span class="glyphicon glyphicon-eye-open"></span> {{t 'notification.follow'}}
+    </a></li>
+    {{/if}}
+    <li role="presentation" class="active"><a href="/notification-settings">
+      <span class="glyphicon glyphicon-cog"></span> {{t 'notification.user.settings'}}
+    </a></li>
+  </ul>
+
+  <br>
+
+</div>
+
+<div class="col-md-12">
+  {{form-model 'notificationSettings'}}
+</div>
+
+</div>{{!-- /row --}}
+</div>{{!-- /container --}}

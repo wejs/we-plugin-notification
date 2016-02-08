@@ -12,5 +12,24 @@
   "notification.find.empty": "No notifications here",
 
   "notification.find": "Notifications",
-  "notification.follow": "Following"
+  "notification.follow": "Following",
+
+  "notification.mark.all.as.read": "Mark all as read",
+
+  "notification.user.settings": "Notification settings",
+
+  "form-notificationSettings-followingEmailNotificatins": "Receive e-mail notifications?",
+  "form-placeholder-notificationSettings-followingEmailNotificatins": " ",
+  "form-helper-notificationSettings-followingEmailNotificatins": " ",
+
+  "form-notificationSettings-email": "Notification email",
+  "form-helper-notificationSettings-email": "Keep this field empty to receive emails in your account email",
+  "form-placeholder-notificationSettings-email": "Ex: example@example.com",
+
+  "form-notificationSettings-updatedAt": "Updated at",
+  "form-helper-notificationSettings-updatedAt": " ",
+  "form-placeholder-notificationSettings-updatedAt": " ",
+  "form-notificationSettings-createdAt": "Created at",
+  "form-helper-notificationSettings-createdAt": " ",
+  "form-placeholder-notificationSettings-createdAt": " "
 }

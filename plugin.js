@@ -7,7 +7,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
   // set plugin routes
   plugin.setRoutes({
-    'get /link-permanent/notification/:id': {
+    'get /link-permanent/notification/:id([0-9]+)': {
       controller    : 'notification',
       model         : 'notification',
       action        : 'linkPermanent',
@@ -52,10 +52,31 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       }
     },
 
-    'post /api/v1/notify/:notificationId': {
+    'post /api/v1/notify/:notificationId([0-9]+)': {
       controller    : 'notification',
       model         : 'notification',
       action        : 'setNotificationRead',
+      permission    : true
+    },
+
+    'get /notification-settings': {
+      controller    : 'notification',
+      model         : 'notification',
+      action        : 'userNotificationSettings',
+      layoutName    : 'fullwidth',
+      template      : 'notification/settings',
+      titleHandler  : 'i18n',
+      titleI18n     : 'notification.user.settings',
+      permission    : true
+    },
+    'post /notification-settings': {
+      controller    : 'notification',
+      model         : 'notification',
+      action        : 'userNotificationSettings',
+      layoutName    : 'fullwidth',
+      titleHandler  : 'i18n',
+      titleI18n     : 'notification.user.settings',
+      template      : 'notification/settings',
       permission    : true
     }
   });
