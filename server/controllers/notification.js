@@ -6,7 +6,7 @@
 
 module.exports = {
   getNotificationCount: function getNotificationCount( req, res ) {
-    if(!req.isAuthenticated()) return req.forbidden();
+    if(!req.isAuthenticated()) return res.forbidden();
 
     var read = req.query.read || false;
 
@@ -68,7 +68,7 @@ module.exports = {
    * Update notification read status attr
    */
   setNotificationRead: function setNotificationRead (req, res) {
-    if(!req.isAuthenticated()) return req.forbidden();
+    if(!req.isAuthenticated()) return res.forbidden();
 
     var redirectTo = req.we.utils.getRedirectUrl(req, res);
 
@@ -114,7 +114,7 @@ module.exports = {
   },
 
   markAllModelNotificationAsRead: function (req, res) {
-    if(!req.isAuthenticated()) return req.forbidden();
+    if(!req.isAuthenticated()) return res.forbidden();
 
     var model = req.params.model;
     var modelId = req.params.modelId;
@@ -144,7 +144,7 @@ module.exports = {
   },
 
   markAllNotificationAsRead: function markAllNotificationAsRead(req, res) {
-    if(!req.isAuthenticated()) return req.forbidden();
+    if(!req.isAuthenticated()) return res.forbidden();
 
     var redirectTo = req.we.utils.getRedirectUrl(req, res);
 
