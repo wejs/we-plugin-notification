@@ -27,7 +27,7 @@ module.exports = function (we) {
        */
       text: {
         type: we.db.Sequelize.TEXT,
-        allowNull: false
+        allowNull: true
       },
       // url to redirect
       redirectUrl: {
