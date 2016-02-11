@@ -13,7 +13,7 @@ we.notification = {
     this.countDisplay = $('.main-menu-link-notification-count');
     this.link = $('.main-menu-notification-link');
     // only start if both elements is found
-    if (this.countDisplay && this.link) this.registerNewCheck();
+    if (this.countDisplay && this.link) this.getNewNotificationCount();
   },
 
   notificationsCountCheckDelay: 60000,// check every 1 min
@@ -37,7 +37,7 @@ we.notification = {
       // update last check time
       self.lastCheckData = new Date().toISOString();
     }).fail(function (err) {
-      console.error('we.post.js:error in getNewsPosts:', err);
+      console.error('we.notification.js:error in getNewNotificationCount:', err);
     }).always(function () {
       self.registerNewCheck();
     });
