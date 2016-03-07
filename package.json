@@ -1,7 +1,7 @@
 {
   "name": "we-plugin-notification",
   "description": "We.js notification plugin",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "dependencies": {},
   "main": "plugin.js",
   "scripts": {
