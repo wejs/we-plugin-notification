@@ -8,6 +8,7 @@ we.notification = {
   count: 0,
   countDisplay: null,
   link: null,
+  notificationsCountCheckDelay: 60000,// check every 1 min
 
   init: function() {
     this.countDisplay = $('.main-menu-link-notification-count');
@@ -16,7 +17,7 @@ we.notification = {
     if (this.countDisplay && this.link) this.getNewNotificationCount();
   },
 
-  notificationsCountCheckDelay: 60000,// check every 1 min
+
   lastCheckData: null,
   registerNewCheck: function registerNewCheck() {
     setTimeout(
@@ -30,16 +31,20 @@ we.notification = {
 
     $.ajax({
       url: '/api/v1/current-user/notification-count'
-    }).then(function (data){
+    }).then(function onSuccessGetNewNotifications(data) {
       self.count = Number(data.count);
 
       self.updateNotificationsDisplay();
       // update last check time
       self.lastCheckData = new Date().toISOString();
-    }).fail(function (err) {
-      console.error('we.notification.js:error in getNewNotificationCount:', err);
-    }).always(function () {
+
       self.registerNewCheck();
+    }).fail(function afterFailtInGetNewNotifications(err) {
+      // skip new checks if user is unAuthenticated
+      if (err.status != '403') {
+        console.error('we.notification.js:error in getNewNotificationCount:', err);
+        self.registerNewCheck();
+      }
     });
   },
 
