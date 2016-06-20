@@ -2,19 +2,17 @@
   "name": "we-plugin-notification",
   "description": "We.js notification plugin",
   "version": "1.0.1",
-  "dependencies": {},
   "main": "plugin.js",
-  "scripts": {
-    "prepublish": "npm prune"
-  },
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org"
-  },
-  "author": "Alberto Souza <alberto.souza.99@gmail.com>",
+  "author": "Alberto Souza <contato@albertosouza.net>",
   "license": "MIT",
   "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:wejs/we-plugin-notification.git"
+  "repository": "wejs/we-plugin-notification",
+  "keywords": [
+    "wejs-plugin"
+  ],
+  "wejs": {
+    "dependencies": {
+      "we-plugin-user": true
+    }
   }
 }

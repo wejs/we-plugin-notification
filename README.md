@@ -2,19 +2,17 @@
 
 [![Dependency Status](https://david-dm.org/wejs/we-plugin-notification.png)](https://david-dm.org/wejs/we-plugin-notification)
 
-> Send notifications to your users, this plugin is inspered in github notifications
+Send notifications to your users, this plugin is inspered in github notifications
 
 ## Installation:
 
-Inside your we.js project folder:
-
 ```sh
-npm install we-plugin-notification --save
+we i we-plugin-notification
 ```
 
 ## API:
 
-> Authenticated user notifications is avaible at */notification* page or API endpoint
+Authenticated user notifications is avaible at */notification* page or API endpoint
 
 ### How to register one new notification:
 
@@ -55,4 +53,4 @@ See **plugin.js** file
 
 ## License
 
-[the MIT license](LICENSE).
+[the MIT license](LICENSE.md).
