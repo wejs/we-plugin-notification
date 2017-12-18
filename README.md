@@ -1,7 +1,5 @@
 # We.js Notification plugin
 
-[![Dependency Status](https://david-dm.org/wejs/we-plugin-notification.png)](https://david-dm.org/wejs/we-plugin-notification)
-
 Send notifications to your users, this plugin is inspered in github notifications
 
 ## Installation:
