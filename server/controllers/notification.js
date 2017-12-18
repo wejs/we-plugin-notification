@@ -5,26 +5,30 @@
  */
 
 module.exports = {
-  getNotificationCount: function getNotificationCount( req, res ) {
+  getNotificationCount( req, res ) {
     if(!req.isAuthenticated()) return res.forbidden();
 
-    var read = req.query.read || false;
+    let read = req.query.read || false;
 
-    req.we.db.models.notification.count({
+    req.we.db.models.notification
+    .count({
       where: {
         userId: req.user.id,
         read: Boolean (read)
       }
-    }).then(function (count) {
-      return res.send({ count: count });
-    }).catch(req.queryError);
+    })
+    .then( (count)=> {
+      res.send({ count: count });
+      return null;
+    })
+    .catch(res.queryError);
   },
 
   /**
    * Find current user notifications
    *
    */
-  find: function findRecords (req, res) {
+  find(req, res) {
     if (!req.isAuthenticated()) return res.forbidden();
 
     if (req.query.read === 'all') {
@@ -43,42 +47,54 @@ module.exports = {
 
     res.locals.query.where.userId = req.user.id;
 
-    req.we.db.models.notification.findAll(res.locals.query)
-    .then(function (r){
+    req.we.db.models.notification
+    .findAll(res.locals.query)
+    .then( (r)=> {
 
       res.locals.data = r;
 
-      req.we.db.models.notification.count({
+      return req.we.db.models.notification
+      .count({
         where: {
           userId: req.user.id,
           read: res.locals.query.where.read
         }
-      }).then(function (count){
+      })
+      .then( (count)=> {
         res.locals.metadata.count = count;
         res.ok();
-      }).catch(req.queryError); // count
-    }).catch(req.queryError); // findAll
+        return null;
+      });
+    })
+    .catch(res.queryError); // findAll
   },
 
-  create: function create(req, res) {
+  create(req, res) {
     return res.notFound();
   },
 
   /**
    * Update notification read status attr
    */
-  setNotificationRead: function setNotificationRead (req, res) {
+  setNotificationRead(req, res) {
     if(!req.isAuthenticated()) return res.forbidden();
 
-    var redirectTo = req.we.utils.getRedirectUrl(req, res);
+    let redirectTo = req.we.utils.getRedirectUrl(req, res);
 
-    req.we.db.models.notification.findById(req.params.notificationId)
-    .then(function (r) {
-      if (!r) return res.notFound();
+    req.we.db.models.notification
+    .findById(req.params.notificationId)
+    .then( (r)=> {
+      if (!r) {
+        res.notFound();
+        return null;
+      }
       // not is owner
-      if (r.userId != req.user.id) return res.forbidden();
+      if (r.userId != req.user.id) {
+        res.forbidden();
+        return null;
+      }
 
-      var read;
+      let read;
       if (req.body.isRead == 'true') {
         read = true;
       } else {
@@ -87,15 +103,17 @@ module.exports = {
 
       if (r.read == read) {
         if (redirectTo) {
-          return res.goTo(redirectTo);
+          res.goTo(redirectTo);
         } else {
-          return res.send({ notification: r });
+          res.send({ notification: r });
         }
+        return null;
       }
 
       r.read = read;
 
-      r.save().then(function() {
+      r.save()
+      .then( ()=> {
         if (req.we.io) {
           // emit to other users devices
           req.we.io.sockets.in('user_' + req.user.id)
@@ -109,21 +127,27 @@ module.exports = {
         } else {
           res.send({ notification: r });
         }
-      }).catch(req.queryError);
-    }).catch(req.queryError);
+
+        return null;
+      })
+      .catch(res.queryError);
+    })
+    .catch(res.queryError);
   },
 
-  markAllModelNotificationAsRead: function (req, res) {
+  markAllModelNotificationAsRead(req, res) {
     if(!req.isAuthenticated()) return res.forbidden();
 
-    var model = req.params.model;
-    var modelId = req.params.modelId;
+    const model = req.params.model;
+    const modelId = req.params.modelId;
 
     if ( !model && !modelId ) {
-      return req.badRequest('model and modelId is required');
+      res.badRequest('model and modelId is required');
+      return null;
     }
 
-    req.we.db.models.notification.update({
+    req.we.db.models.notification
+    .update({
       read: true
     },{
       where: {
@@ -132,87 +156,104 @@ module.exports = {
         modelName: model,
         modelId: modelId
       }
-    }).then(function updated(records) {
+    })
+    .then(function updated(records) {
       if (!records || !records.length) {
         // no unread notifications
-        return res.send({});
+        res.send({});
+      } else {
+        // if success respond with updated notifications
+        res.send({ notification: records });
       }
-
-      // if success respond with updated notifications
-      res.send({ notification: records });
-    }).catch(res.queryError);
+      return null;
+    })
+    .catch(res.queryError);
   },
 
-  markAllNotificationAsRead: function markAllNotificationAsRead(req, res) {
+  markAllNotificationAsRead(req, res) {
     if(!req.isAuthenticated()) return res.forbidden();
 
-    var redirectTo = req.we.utils.getRedirectUrl(req, res);
+    let redirectTo = req.we.utils.getRedirectUrl(req, res);
 
-    req.we.db.models.notification.update({
+    req.we.db.models.notification
+    .update({
       read: true
     },{
       where: {
         userId: req.user.id,
         read: false
       }
-    }).then(function updated() {
+    })
+    .then(function updated() {
       if (redirectTo) {
         res.goTo(redirectTo);
       } else {
         res.send({});
       }
-    }).catch(req.queryError);
+      return null;
+    })
+    .catch(res.queryError);
   },
 
   /**
    * Redirect user to related model
    *
    */
-  linkPermanent: function linkPermanent(req, res) {
-    req.we.db.models.findById(req.params.id)
-    .then(function (notification){
+  linkPermanent(req, res) {
+    req.we.db.models
+    .findById(req.params.id)
+    .then( (notification)=> {
       if ( !notification ) {
-        return res.notFound();
+        res.notFound();
+      } else {
+        let url = '/' + notification.modelName + '/' + notification.modelId;
+        res.goTo(url);
       }
 
-      var url = '/' + notification.modelName + '/' + notification.modelId;
-
-      return res.goTo(url);
-    }).catch(res.queryError);
+      return null;
+    })
+    .catch(res.queryError);
   },
 
-
-  userNotificationSettings: function userNotificationSettings(req, res) {
+  userNotificationSettings(req, res) {
     if (!req.isAuthenticated()) return res.forbidden();
 
     if (!res.locals.data) res.locals.data = {};
 
-    res.locals.Model.findOne({
+    res.locals.Model
+    .findOne({
       userId: req.user.id
-    }).then(function (record) {
+    })
+    .then( (record)=> {
 
       if (req.method == 'POST') {
         if (!record) {
           //create
-          res.locals.Model.create(req.body)
-          .then(function (record) {
+          return res.locals.Model
+          .create(req.body)
+          .then( (record)=> {
             res.locals.data = record;
             res.ok();
-          }).catch(res.queryError);
+            return null;
+          })
+          .catch(res.queryError);
         } else {
-
           // update
-          record.updateAttributes(req.body)
-          .then(function() {
+          return record.updateAttributes(req.body)
+          .then( ()=> {
             res.locals.data = record;
             res.ok();
-          }).catch(res.queryError);
+            return null;
+          })
+          .catch(res.queryError);
         }
       } else {
-
         res.locals.data = record;
         res.ok();
       }
-    }).catch(res.queryError);
+
+      return null;
+    })
+    .catch(res.queryError);
   }
 };

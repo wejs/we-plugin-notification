@@ -7,7 +7,7 @@
  */
 
 module.exports = function (we) {
-  var model = {
+  const model = {
     definition: {
       locale: {
         type: we.db.Sequelize.STRING,
@@ -56,12 +56,12 @@ module.exports = function (we) {
       actions: {
         type: we.db.Sequelize.BLOB,
         skipSanitizer: true,
-        get: function()  {
+        get()  {
           if (this.getDataValue('actions'))
             return JSON.parse( this.getDataValue('actions') );
           return {};
         },
-        set: function(object) {
+        set(object) {
           if (typeof object == 'object') {
             this.setDataValue('actions', JSON.stringify(object));
           } else {

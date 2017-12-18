@@ -7,7 +7,7 @@
  */
 
 module.exports = function (we) {
-  var model = {
+  const model = {
     // define you model here
     // see http://docs.sequelizejs.com/en/latest/docs/models-definition
     definition: {

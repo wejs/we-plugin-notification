@@ -3,7 +3,7 @@
  */
 
 module.exports = function loadPlugin(projectPath, Plugin) {
-  var plugin = new Plugin(__dirname);
+  const plugin = new Plugin(__dirname);
 
   plugin.setConfigs({
     notification: {
@@ -95,10 +95,9 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     we.notification = true;
   });
 
-
   plugin.hooks.on('we-plugin-menu:after:set:core:menus', function(data, done){
-    var req = data.req;
-    var res = data.res;
+    const req = data.req;
+    const res = data.res;
 
     // set user menu
     if (req.isAuthenticated()) {
@@ -121,14 +120,15 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   /**
    * Send email notifications to all users
    */
-  plugin.sendUsersEmailNotifications= function sendUsersEmailNotifications(we, done) {
-    var afterCreatedAt = we.utils.moment();
+  plugin.sendUsersEmailNotifications = function sendUsersEmailNotifications(we, done) {
+    const afterCreatedAt = we.utils.moment();
 
     afterCreatedAt.subtract(we.config.notification.waitMinutesForSendEmail, 'm');
 
-    var usersToReceive = {};
+    let usersToReceive = {};
 
-    we.db.models.notification.findAll({
+    we.db.models.notification
+    .findAll({
       where: {
         emailSend: false,
         read: false,
@@ -146,10 +146,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       include: [
         { as: 'settings', model: we.db.models.notificationSettings }
       ]
-    }).then(function (notifications) {
-
+    })
+    .then( (notifications)=> {
       // group by user id
-      for (var i = notifications.length - 1; i >= 0; i--) {
+      for (let i = notifications.length - 1; i >= 0; i--) {
         if (!usersToReceive[notifications[i].userId]) {
           usersToReceive[notifications[i].userId] = {
             id: notifications[i].userId,
@@ -163,14 +163,14 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       }
 
       // for each user
-      we.utils.async.eachSeries(usersToReceive, function( userToReceive, done) {
+      we.utils.async.eachSeries(usersToReceive, ( userToReceive, done)=> {
 
-        we.db.models.user.findById(userToReceive.id)
-        .then(function (user) {
-
+        we.db.models.user
+        .findById(userToReceive.id)
+        .then( (user)=> {
           if(!user) return done();
 
-          var email = user.email;
+          let email = user.email;
 
           if (userToReceive.notifications[0] &&
             userToReceive.notifications[0].settings &&
@@ -192,31 +192,40 @@ module.exports = function loadPlugin(projectPath, Plugin) {
             notifications: userToReceive.notifications,
             we: we,
             locale: user.locale || null
-          }, function (err) {
+          }, (err)=> {
             if (err) {
               we.log.error(err);
               done();
             } else {
               we.log.info('Send '+userToReceive.notifications.length+' notifications in one email to:', email);
               // update all notifications
-              we.db.models.notification.update({
+              we.db.models.notification
+              .update({
                 emailSend: true
               }, {
                 where: {
                   id: userToReceive.notificationsIds
                 }
-              }). then(function(){
+              })
+              .then( ()=> {
                 done();
-              }).catch(function (err) {
+                return null;
+              })
+              .catch( (err)=> {
                 we.log.error(err);
 
                 done();
+                return null;
               });
             }
           });
-        }).catch(done);
+        })
+        .catch(done);
       }, done);
-    }).catch(done);
+
+      return null;
+    })
+    .catch(done);
   }
 
   plugin.addJs('we.notification', {
