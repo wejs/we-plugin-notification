@@ -12,6 +12,33 @@ module.exports = function loadPlugin(projectPath, Plugin) {
        * @type {Object}
        */
       waitMinutesForSendEmail: 30
+    },
+    emailTypes: {
+      userNotifications: {
+        label: 'Email com a lista de notificações não lidas do usuário',
+        templateVariables: {
+          displayName: {
+            example: 'Alberto Souza',
+            description: 'Nome da pessoa convidada'
+          },
+          email: {
+            example: 'contact@linkysysytems.com',
+            description: 'Email da pessoa convidada'
+          },
+          notifications: {
+            example: 'Lista de notificações',
+            description: 'Nome deste site'
+          },
+          siteName: {
+            example: 'Site Name',
+            description: 'Nome deste site'
+          },
+          siteUrl: {
+            example: '/#example',
+            description: 'Endereço deste site'
+          }
+        }
+      }
     }
   });
 
@@ -168,7 +195,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         we.db.models.user
         .findById(userToReceive.id)
         .then( (user)=> {
-          if(!user) return done();
+          if (!user) {
+            done();
+            return null;
+          }
 
           let email = user.email;
 
@@ -179,19 +209,35 @@ module.exports = function loadPlugin(projectPath, Plugin) {
             email = userToReceive.notifications[0].settings.email;
           }
 
+          let nt = '<table class="notitication-table">';
+
+          userToReceive.notifications.forEach( (n)=> {
+            nt += `<tr>
+              <td>${n.title}</td>
+              <td>
+                <a class="notification-link" href="${we.config.hostname}${n.redirectUrl}">Ver</a>
+              </td>
+            </tr>`;
+          });
+
+          nt += '</table>';
+
+          let appName = we.config.appName;
+          if (we.systemSettings && we.systemSettings.siteName) {
+            appName = we.systemSettings.siteName;
+          }
+
           we.email.sendEmail('userNotifications', {
-            email: email,
-            subject: we.i18n.__('notification.user.email.subject', {
-              user: user,
-              siteName: we.config.appName
-            })
+            to: email
           },
           // template data
           {
             user: user,
-            notifications: userToReceive.notifications,
-            we: we,
-            locale: user.locale || null
+            displayName: user.displayName,
+            email: user.email,
+            notifications: nt,
+            siteName: appName,
+            siteURL: we.config.hostname
           }, (err)=> {
             if (err) {
               we.log.error(err);
@@ -219,6 +265,8 @@ module.exports = function loadPlugin(projectPath, Plugin) {
               });
             }
           });
+
+          return null;
         })
         .catch(done);
       }, done);
