@@ -1,6 +1,6 @@
 # We.js Notification plugin
 
-Send notifications to your users, this plugin is inspered in github notifications
+Send notifications to your users, this plugin is inspired in github notifications
 
 ## Installation:
 
