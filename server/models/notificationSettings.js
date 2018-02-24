@@ -38,18 +38,9 @@ module.exports = function (we) {
       // disable alias feature to this model
       enableAlias: false,
 
-      // title field, for default title record pages
-      // titleField: 'title',
-
-      // Class methods for use with: we.db.models.[yourmodel].[method]
-      classMethods: {},
-      // record method for use with record.[method]
       instanceMethods: {
         getUrlPath: null
-      },
-      // Sequelize hooks
-      // See http://docs.sequelizejs.com/en/latest/api/hooks
-      hooks: {}
+      }
     }
   };
 

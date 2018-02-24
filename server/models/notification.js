@@ -106,14 +106,7 @@ module.exports = function (we) {
     },
     options: {
       // title field, for default title record pages
-      titleField: 'title',
-      // Class methods for use with: we.db.models.[yourmodel].[method]
-      classMethods: {},
-      // record method for use with record.[method]
-      instanceMethods: {},
-      // Sequelize hooks
-      // See http://docs.sequelizejs.com/en/latest/api/hooks
-      hooks: {}
+      titleField: 'title'
     }
   };
 

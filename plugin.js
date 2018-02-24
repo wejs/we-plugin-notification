@@ -160,9 +160,9 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         emailSend: false,
         read: false,
         createdAt: {
-          $lt: afterCreatedAt.format('YYYY-MM-DD HH:mm:ss')
+          [we.Op.lt]: afterCreatedAt.format('YYYY-MM-DD HH:mm:ss')
         },
-        $and: [
+        [we.Op.and]: [
           ['settings.followingEmailNotifications != false OR settings.followingEmailNotifications is NULL', [] ]
         ]
       },
