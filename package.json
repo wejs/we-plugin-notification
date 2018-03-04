@@ -1,7 +1,7 @@
 {
   "name": "we-plugin-notification",
   "description": "We.js notification plugin",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "main": "plugin.js",
   "author": "Alberto Souza <contato@albertosouza.net>",
   "license": "MIT",
