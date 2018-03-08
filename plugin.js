@@ -149,6 +149,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
    */
   plugin.sendUsersEmailNotifications = function sendUsersEmailNotifications(we, done) {
     const afterCreatedAt = we.utils.moment();
+    const qLiteral = we.db.defaultConnection.literal;
 
     afterCreatedAt.subtract(we.config.notification.waitMinutesForSendEmail, 'm');
 
@@ -163,7 +164,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
           [we.Op.lt]: afterCreatedAt.format('YYYY-MM-DD HH:mm:ss')
         },
         [we.Op.and]: [
-          ['settings.followingEmailNotifications != false OR settings.followingEmailNotifications is NULL', [] ]
+          qLiteral('settings.followingEmailNotifications != false OR settings.followingEmailNotifications is NULL')
         ]
       },
       orderBy: [
